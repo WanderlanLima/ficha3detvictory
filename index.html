@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D&T Victory Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div id="app">
+    <header class="app-header">
+      <h1>Victory Builder</h1>
+      <div class="header-actions">
+        <button id="btn-save" class="icon-btn" title="Salvar Ficha">💾</button>
+        <button id="btn-share" class="icon-btn" title="Compartilhar Card">📤</button>
+        <button id="btn-list" class="icon-btn" title="Minhas Fichas">📂</button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- Editor Section -->
+      <section id="editor" class="panel active">
+        <h2>Editar Personagem</h2>
+        <form id="char-form">
+          <div class="form-group">
+            <label for="char-name">Nome</label>
+            <input type="text" id="char-name" placeholder="Ex: Aledin" required>
+          </div>
+
+          <div class="form-group" style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px;">
+            <div>
+              <label for="char-archetype">Arquétipo</label>
+              <input type="text" id="char-archetype" placeholder="Ex: Lutador">
+            </div>
+            <div>
+              <label for="char-xp">XP Atual</label>
+              <input type="number" id="char-xp" value="0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Imagem do Personagem</label>
+            <div class="image-controls">
+              <div class="input-row">
+                <input type="file" id="char-image-upload" accept="image/*">
+              </div>
+              <div class="input-row">
+                <input type="text" id="char-image-url" placeholder="Ou cole a URL da imagem aqui...">
+              </div>
+
+              <div class="control-row">
+                <label>Zoom</label>
+                <input type="range" id="img-scale" min="1" max="3" step="0.1" value="1">
+              </div>
+              <div class="control-row">
+                <label for="img-full-art" style="width: auto; margin-right: 10px;">Full Art</label>
+                <input type="checkbox" id="img-full-art" style="flex: 0;">
+              </div>
+              <div class="control-row">
+                <label>Posição X</label>
+                <input type="range" id="img-pos-x" min="-100" max="100" step="1" value="0">
+              </div>
+              <div class="control-row">
+                <label>Posição Y</label>
+                <input type="range" id="img-pos-y" min="-100" max="100" step="1" value="0">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group stats-grid victory-stats">
+            <div class="stat-input">
+              <label for="stat-p">Poder (P)</label>
+              <input type="number" id="stat-p" value="0" min="0">
+            </div>
+            <div class="stat-input">
+              <label for="stat-h">Habilidade (H)</label>
+              <input type="number" id="stat-h" value="0" min="0">
+            </div>
+            <div class="stat-input">
+              <label for="stat-r">Resistência (R)</label>
+              <input type="number" id="stat-r" value="0" min="0">
+            </div>
+          </div>
+
+          <div class="form-group resources-grid">
+            <div class="stat-input">
+              <label for="char-pas">Bônus PA</label>
+              <input type="number" id="char-pas" value="0">
+              <small>+ P</small>
+            </div>
+            <div class="stat-input">
+              <label for="char-pms">Bônus PM</label>
+              <input type="number" id="char-pms" value="0">
+              <small>+ Hx5</small>
+            </div>
+            <div class="stat-input">
+              <label for="char-pvs">Bônus PV</label>
+              <input type="number" id="char-pvs" value="0">
+              <small>+ Rx5</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="char-kits">Kits</label>
+              <input type="color" id="color-kits" value="#FFD700" title="Cor dos Kits">
+            </div>
+            <textarea id="char-kits" rows="2" placeholder="Ex: Guerreiro, Mago (separados por vírgula)"></textarea>
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="char-vantagens">Vantagens</label>
+              <input type="color" id="color-vantagens" value="#4CAF50" title="Cor da Tag">
+            </div>
+            <textarea id="char-vantagens" rows="2"
+              placeholder="Ex: Ataque Especial, Voo (Separe por vírgulas)"></textarea>
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="char-desvantagens">Desvantagens</label>
+              <input type="color" id="color-desvantagens" value="#F44336" title="Cor da Tag">
+            </div>
+            <textarea id="char-desvantagens" rows="2"
+              placeholder="Ex: Código de Honra (Separe por vírgulas)"></textarea>
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="char-pericias">Perícias</label>
+              <input type="color" id="color-pericias" value="#2196F3" title="Cor da Tag">
+            </div>
+            <textarea id="char-pericias" rows="2"
+              placeholder="Ex: Esportes, Sobrevivência (Separe por vírgulas)"></textarea>
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="char-tecnicas">Técnicas</label>
+              <input type="color" id="color-tecnicas" value="#9C27B0" title="Cor da Tag">
+            </div>
+            <textarea id="char-tecnicas" rows="2" placeholder="Ex: Kamehameha (Separe por vírgulas)"></textarea>
+          </div>
+
+          <div class="form-group">
+            <div class="label-row">
+              <label for="char-inventario">Inventário</label>
+              <input type="color" id="color-inventario" value="#FF9800" title="Cor da Tag">
+            </div>
+            <textarea id="char-inventario" rows="2" placeholder="Ex: Poção de Cura (Separe por vírgulas)"></textarea>
+          </div>
+        </form>
+      </section>
+
+      <!-- Preview Section -->
+      <section id="preview" class="panel">
+        <h2>Visualização</h2>
+        <div class="card-container">
+          <div id="character-card" class="victory-card">
+            <div class="card-header">
+              <div class="header-main">
+                <h3 id="card-name">Nome do Personagem</h3>
+                <div id="card-archetype" class="card-subtitle">Arquétipo</div>
+              </div>
+              <div class="header-badges">
+                <div class="total-badge"><span id="card-total-points">0pt</span></div>
+                <div class="xp-badge" id="xp-badge"><span id="card-xp">0</span> XP</div>
+              </div>
+            </div>
+            <div class="card-image-area">
+              <img id="card-img" src="" alt="Personagem" style="display:none">
+              <div id="card-img-placeholder">Sem Imagem</div>
+            </div>
+            <div class="card-stats victory-card-stats">
+              <div class="stat-row principal">
+                <div class="stat-badge">
+                  <span class="stat-label">P</span>
+                  <span class="stat-value" id="card-p">0</span>
+                </div>
+                <div class="stat-badge">
+                  <span class="stat-label">H</span>
+                  <span class="stat-value" id="card-h">0</span>
+                </div>
+                <div class="stat-badge">
+                  <span class="stat-label">R</span>
+                  <span class="stat-value" id="card-r">0</span>
+                </div>
+              </div>
+              <div class="stat-row derived">
+                <div class="res-badge"><strong>PA</strong> <span id="card-pas">0</span></div>
+                <div class="res-badge"><strong>PM</strong> <span id="card-pm">0</span></div>
+                <div class="res-badge"><strong>PV</strong> <span id="card-pv">0</span></div>
+              </div>
+            </div>
+            <div class="card-info">
+              <div class="info-block" id="block-kits" style="display: none;">
+                <h4>Kits</h4>
+                <div class="tag-container" id="card-kits"></div>
+              </div>
+              <div class="info-block" id="block-vantagens">
+                <h4>Vantagens</h4>
+                <div class="tag-container" id="card-vantagens"></div>
+              </div>
+              <div class="info-block" id="block-desvantagens">
+                <h4>Desvantagens</h4>
+                <div class="tag-container" id="card-desvantagens"></div>
+              </div>
+              <div class="info-block" id="block-pericias">
+                <h4>Perícias</h4>
+                <div class="tag-container" id="card-pericias"></div>
+              </div>
+              <div class="info-block" id="block-tecnicas">
+                <h4>Técnicas</h4>
+                <div class="tag-container" id="card-tecnicas"></div>
+              </div>
+              <div class="info-block" id="block-inventario">
+                <h4>Inventário</h4>
+                <div class="tag-container" id="card-inventario"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-target="editor">Editar</button>
+      <button class="nav-btn" data-target="preview">Card</button>
+    </nav>
+
+    <!-- Modals -->
+    <dialog id="library-modal">
+      <div class="modal-content">
+        <h3>Fichas Salvas</h3>
+        <ul id="saved-list"></ul>
+        <button id="btn-close-library">Fechar</button>
+      </div>
+    </dialog>
+  </div>
+  <script type="module" src="/main.js"></script>
+</body>
+
+</html>
